@@ -7,6 +7,7 @@ import struct
 import time
 
 import serial
+from dataclasses import dataclass
 from PIL import Image, ImageOps
 from serial.tools.list_ports import comports as list_comports
 
@@ -40,6 +41,13 @@ class RequestCodeEnum(enum.IntEnum):
     SET_DIMENSION = 19  # 0x13
     SET_QUANTITY = 21  # 0x15
     GET_PRINT_STATUS = 163  # 0xA3
+
+
+@dataclass
+class PrintStatus:
+    finished: bool
+    progress: int
+    error: bool
 
 
 def _packet_to_int(x):
@@ -113,11 +121,11 @@ class PrinterClient:
         self.end_page_print()
         while True:
             status = self.get_print_status()
-            if status["error"]:
-                raise RuntimeError("Failure during print")
-            if status["finished"] == 1:
+            if status.error:
+                raise RuntimeError("Failure during printing")
+            if status.finished:
                 break
-            print(f"Progress: {status['progress']}")
+            logging.info(f"Printing.. {status.progress}%")
 
         while not self.end_print():
             time.sleep(0.1)
@@ -293,9 +301,5 @@ class PrinterClient:
         packet = self._transceive(RequestCodeEnum.GET_PRINT_STATUS, b"\x01", 16)
         finished = bool(packet.data[1])
         progress = packet.data[2]
-        error = packet.data[6]
-        return {
-            "finished": finished,
-            "progress": progress,
-            "error": error,
-        }
+        error = bool(packet.data[6])
+        return PrintStatus(finished, progress, error)
