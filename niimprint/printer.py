@@ -108,14 +108,16 @@ class PrinterClient:
         self._transport = transport
         self._packetbuf = bytearray()
 
-    def print_image(self, image: Image, density: int = 3):
+    def print_image(self, image: Image, model: str, density: int = 3):
         self.set_label_density(density)
         self.set_label_type(1)
         self.start_print()
-        # self.allow_print_clear()  # Something unsupported in protocol decoding (B21)
+        if model != "b21":
+            self.allow_print_clear()  # Something unsupported in protocol decoding (B21) but needed for D11
         self.start_page_print()
         self.set_dimension(image.height, image.width)
-        # self.set_quantity(1)  # Same thing (B21)
+        if model != "b21":
+            self.set_quantity(1)  # Same thing (B21)
         for pkt in self._encode_image(image):
             self._send(pkt)
         self.end_page_print()
