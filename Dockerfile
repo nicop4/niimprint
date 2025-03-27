@@ -38,7 +38,16 @@ RUN dotnet restore
 RUN dotnet publish -c Release -o /app/dotnet
 
 # Stage 3: Final image combining Python and .NET
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+FROM python:3.11-slim AS final
+
+# Install .NET runtime
+RUN apt-get update && apt-get install -y \
+    wget \
+    && wget https://dotnet.microsoft.com/download/dotnet/scripts/v1/dotnet-install.sh -O dotnet-install.sh \
+    && chmod +x dotnet-install.sh \
+    && ./dotnet-install.sh --channel 8.0 --runtime aspnetcore \
+    && rm dotnet-install.sh \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copy Python environment
 COPY --from=python-base /root/.local /root/.local
@@ -48,7 +57,7 @@ COPY --from=python-base /app /app
 COPY --from=dotnet-base /app/dotnet /app/dotnet
 
 # Set environment variables
-ENV PATH="/root/.local/bin:$PATH"
+ENV PATH="/root/.local/bin:/root/.dotnet:$PATH"
 ENV PYTHONPATH=/app
 ENV NIIMPRINT_B1_USB_ADDRESS=/dev/ttyACM1
 
