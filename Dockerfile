@@ -38,7 +38,7 @@ RUN dotnet restore
 RUN dotnet publish -c Release -o /app/dotnet
 
 # Stage 3: Final image combining Python and .NET
-FROM python:3.11-slim
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 
 # Copy Python environment
 COPY --from=python-base /root/.local /root/.local
