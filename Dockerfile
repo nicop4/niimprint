@@ -18,7 +18,7 @@ RUN curl -sSL https://install.python-poetry.org | python3 -
 ENV PATH="/root/.local/bin:$PATH"
 
 # Python application setup
-COPY . /app
+COPY ./niimprint /app
 WORKDIR /app
 
 RUN pip install --no-cache-dir -r requirements.txt
