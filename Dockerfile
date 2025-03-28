@@ -65,4 +65,4 @@ ENV NIIMPRINT_B1_USB_ADDRESS=/dev/ttyACM1
 EXPOSE 8080
 
 # Default command
-CMD ["dotnet", "/app/dotnet/NiimprintApi.dll"]
+ENTRYPOINT [ "dotnet", "/app/dotnet/NiimprintApi.dll"]
