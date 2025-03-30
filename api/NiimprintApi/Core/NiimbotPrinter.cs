@@ -16,11 +16,23 @@ public abstract class NiimbotPrinter
     protected bool Verbose { get; set; }
     protected int MaxImageSizeX { get; set; }
     protected int MaxImageSizeY { get; set; }
+    protected string BasePath { get; set; }
 
     protected ILogger<NiimbotPrinter> _logger;
 
+    public NiimbotPrinter(ILogger<NiimbotPrinter> logger)
+    {
+        _logger = logger;
+        Model = PrinterModel.b1;
+        Connection = "usb";
+        Address = Environment.GetEnvironmentVariable("NIIMPRINT_B1_USB_ADDRESS") ?? throw new ArgumentNullException("NIIMPRINT_B1_USB_ADDRESS");
+        BasePath = "/app/data";
+    }
     public (bool result, string errorMessage) Print(string imagePath){
 
+        imagePath = Path.Combine(BasePath, imagePath);
+        _logger.LogInformation($"Print - image {imagePath}");
+        
         if(!File.Exists(imagePath)){
             return (false, $"Image file not found: {imagePath}");
         }

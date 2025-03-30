@@ -7,7 +7,7 @@ namespace NiimprintApi.Core;
 /// </summary>
 public class NiimbotB1_60x40 : NiimbotPrinter
 {
-    public NiimbotB1_60x40(ILogger<NiimbotPrinter> logger)
+    public NiimbotB1_60x40(ILogger<NiimbotPrinter> logger) : base(logger)
     {
         _logger = logger;
         Model = PrinterModel.b1;
@@ -19,5 +19,6 @@ public class NiimbotB1_60x40 : NiimbotPrinter
         Address = Environment.GetEnvironmentVariable("NIIMPRINT_B1_USB_ADDRESS") ?? throw new ArgumentNullException("NIIMPRINT_B1_USB_ADDRESS");
         MaxImageSizeX = 480;
         MaxImageSizeY = 320;
+        BasePath = Environment.GetEnvironmentVariable("LABEL_PATH") ?? throw new ArgumentNullException("LABEL_PATH");
     }
 }
