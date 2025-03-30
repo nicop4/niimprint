@@ -18,7 +18,7 @@ public class NiimbotB1_50x30 : NiimbotPrinter
         // get address from environment variable
         Address = Environment.GetEnvironmentVariable("NIIMPRINT_B1_USB_ADDRESS") ?? throw new ArgumentNullException("NIIMPRINT_B1_USB_ADDRESS");
         MaxImageSizeX = 400;
-        MaxImageSizeY = 240;
+        MaxImageSizeY = 265;
         BasePath = Environment.GetEnvironmentVariable("LABEL_PATH") ?? throw new ArgumentNullException("STAMP_PATH");
     }
 }
