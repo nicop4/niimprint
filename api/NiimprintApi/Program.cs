@@ -30,6 +30,11 @@ app.UseSwaggerUI();
 // listens on port 8080
 app.UseRouting();
 
+// add cors policy
+app.UseCors(builder => builder
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
 
 app.MapControllers();
 
