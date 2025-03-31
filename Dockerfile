@@ -56,9 +56,6 @@ COPY --from=python-base /app /app
 # Copy .NET application
 COPY --from=dotnet-base /app/dotnet /app/dotnet
 
-# install pdftoppm
-RUN apt-get update && apt-get install -y poppler-utils
-
 # Set environment variables
 ENV PATH="/root/.local/bin:/root/.dotnet:$PATH"
 ENV PYTHONPATH=/app
