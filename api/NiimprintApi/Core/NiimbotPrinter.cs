@@ -24,6 +24,7 @@ public abstract class NiimbotPrinter
     {
         _logger = logger;
         Model = PrinterModel.b1;
+        Density = PrintDensity._5;
         Connection = "usb";
         Address = Environment.GetEnvironmentVariable("NIIMPRINT_B1_USB_ADDRESS") ?? throw new ArgumentNullException("NIIMPRINT_B1_USB_ADDRESS");
         BasePath = "/app/data";

@@ -18,13 +18,13 @@ public class NiimprintController : ControllerBase
         _logger = logger;
     }
 
-    [HttpPost("Print50x30/{imagePath}")]
-    public ActionResult Print50x30(string imagePath)
+    [HttpPost("PrintProductLabel/{imagePath}")]
+    public ActionResult PrintProductLabel(string imagePath)
     {
         // Decode URL-encoded characters
         imagePath = Uri.UnescapeDataString(imagePath);
         
-        _logger.LogInformation($"Print50x30 - image {imagePath}");
+        _logger.LogInformation($"Print50x30 for product label- image {imagePath}");
         (bool result, string errorMessage) = _printer50x30.Print(imagePath);
         if (!result)
         {
@@ -33,13 +33,27 @@ public class NiimprintController : ControllerBase
         return Ok();
     }
 
-    [HttpPost("Print60x40/{imagePath}")]
-    public ActionResult Print60x40(string imagePath)
+    [HttpPost("PrintCustomerAddress/{imagePath}")]
+    public ActionResult PrintCustomerAddress(string imagePath)
     {
         // Decode URL-encoded characters
         imagePath = Uri.UnescapeDataString(imagePath);
         
-        _logger.LogInformation($"Print60x40 - image {imagePath}");
+        _logger.LogInformation($"Print60x40 for customer address - image {imagePath}");
+        (bool result, string errorMessage) = _printer60x40.Print(imagePath);
+        if (!result)
+        {
+            return BadRequest(errorMessage);
+        }
+        return Ok();
+    }
+    [HttpPost("PrintStamp/{imagePath}")]
+    public ActionResult PrintStamp(string imagePath)
+    {
+        // Decode URL-encoded characters
+        imagePath = Uri.UnescapeDataString(imagePath);
+        
+        _logger.LogInformation($"Print60x40 for stamp - image {imagePath}");
         (bool result, string errorMessage) = _printer60x40.Print(imagePath);
         if (!result)
         {

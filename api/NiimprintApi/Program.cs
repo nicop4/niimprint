@@ -11,6 +11,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<NiimbotB1_50x30>();
 builder.Services.AddSingleton<NiimbotB1_60x40>();
+builder.Services.AddSingleton<NiimbotB1_Product>();
+builder.Services.AddSingleton<NiimbotB1_Stamp>();
+builder.Services.AddSingleton<NiimbotB1_Address>();
 builder.WebHost.ConfigureKestrel((context, serverOptions) =>
 {
     serverOptions.Listen(IPAddress.Any, 8080);
