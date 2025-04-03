@@ -8,13 +8,15 @@ namespace NiimprintApi.Controllers;
 public class NiimprintController : ControllerBase
 {
     private readonly ILogger<NiimprintController> _logger;
-    private readonly NiimbotB1_50x30 _printer50x30;
-    private readonly NiimbotB1_60x40 _printer60x40;
+    private readonly NiimbotB1_Address _printerAddress;
+    private readonly NiimbotB1_Product _printerProduct;
+    private readonly NiimbotB1_Stamp _printerStamp;
 
-    public NiimprintController(ILogger<NiimprintController> logger, NiimbotB1_50x30 printer50x30, NiimbotB1_60x40 printer60x40)
+    public NiimprintController(ILogger<NiimprintController> logger, NiimbotB1_Address printerAddress, NiimbotB1_Product printerProduct, NiimbotB1_Stamp printerStamp)
     {
-        _printer50x30 = printer50x30;
-        _printer60x40 = printer60x40;
+        _printerAddress = printerAddress;
+        _printerProduct = printerProduct;
+        _printerStamp = printerStamp;
         _logger = logger;
     }
 
@@ -25,7 +27,7 @@ public class NiimprintController : ControllerBase
         imagePath = Uri.UnescapeDataString(imagePath);
         
         _logger.LogInformation($"Print50x30 for product label- image {imagePath}");
-        (bool result, string errorMessage) = _printer50x30.Print(imagePath);
+        (bool result, string errorMessage) = _printerProduct.Print(imagePath);
         if (!result)
         {
             return BadRequest(errorMessage);
@@ -40,7 +42,7 @@ public class NiimprintController : ControllerBase
         imagePath = Uri.UnescapeDataString(imagePath);
         
         _logger.LogInformation($"Print60x40 for customer address - image {imagePath}");
-        (bool result, string errorMessage) = _printer60x40.Print(imagePath);
+        (bool result, string errorMessage) = _printerAddress.Print(imagePath);
         if (!result)
         {
             return BadRequest(errorMessage);
@@ -54,7 +56,7 @@ public class NiimprintController : ControllerBase
         imagePath = Uri.UnescapeDataString(imagePath);
         
         _logger.LogInformation($"Print60x40 for stamp - image {imagePath}");
-        (bool result, string errorMessage) = _printer60x40.Print(imagePath);
+        (bool result, string errorMessage) = _printerStamp.Print(imagePath);
         if (!result)
         {
             return BadRequest(errorMessage);
